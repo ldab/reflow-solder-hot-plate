@@ -55,7 +55,7 @@
     )
   )
   (symbol "IP2721" (in_bom yes) (on_board yes)
-    (property "Reference" "U1" (id 0) (at 2.0194 13.97 0)
+    (property "Reference" "U2" (id 0) (at 2.0194 13.97 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "IP2721" (id 1) (at 2.0194 11.43 0)
@@ -77,6 +77,9 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "LCSC Part Number Alternative" "-" (id 7) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "LCSC" "C603176" (id 8) (at 0 0 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (symbol "IP2721_0_1"
