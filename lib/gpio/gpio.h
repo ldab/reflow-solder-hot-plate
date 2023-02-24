@@ -4,7 +4,6 @@
 
 #define BUTTON             0
 
-#define TEMP_ANALOG        10
 #define FET_GATE           14
 
 #define LED_R              5

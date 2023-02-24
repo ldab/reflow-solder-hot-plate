@@ -65,7 +65,6 @@ void gpios_init(void)
   pinMode(LED_G, OUTPUT);
   pinMode(LED_B, OUTPUT);
 
-  pinMode(TEMP_ANALOG, INPUT);
   pinMode(FET_GATE, OUTPUT);
 
   set_led(CYAN, SLOW);
