@@ -65,8 +65,6 @@ void gpios_init(void)
   pinMode(LED_G, OUTPUT);
   pinMode(LED_B, OUTPUT);
 
-  pinMode(FET_GATE, OUTPUT);
-
   set_led(CYAN, SLOW);
 
   xTaskCreate(TaskLed, "TaskLed", 1024, NULL, 0, NULL);

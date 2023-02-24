@@ -5,11 +5,15 @@
 #include <WiFiClient.h>
 
 #include "gpio.h"
+#include "temp_control.h"
+#include "lmt85.h"
 
-const char *ssid         = "....";
-const char *password     = "....";
+const char *ssid         = "Hvor er Miguel?";
+const char *password     = "soonhewillbehere!";
 const char *www_username = "admin";
 const char *www_password = "esp32";
+
+float temp = 0;
 
 WebServer server(80);
 
@@ -99,6 +103,8 @@ void setup(void)
     Serial.print(".");
   }
 
+  // Serial.setDebugOutput(true);
+
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(ssid);
@@ -120,6 +126,13 @@ void setup(void)
   server.onNotFound(handleNotFound);
   server.begin();
   Serial.println("HTTP server started");
+
+  lmt85_init();
+  lmt85_start(&temp);
+  
+  reflow_profile cfg = TEMP_CONTROL_DEFAULT();
+  temp_control_config(&cfg);
+  temp_control_start(&temp);
 }
 
 void loop(void)

@@ -4,8 +4,6 @@
 
 #define BUTTON             0
 
-#define FET_GATE           14
-
 #define LED_R              5
 #define LED_G              2
 #define LED_B              8

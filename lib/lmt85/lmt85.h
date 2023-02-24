@@ -6,3 +6,4 @@
 
 void lmt85_init(void);
 float lmt85_temp(void);
+void lmt85_start(float *temp);

@@ -13,11 +13,21 @@
 
 // The resistance multiplies by approximately 1.63 from 20°C to 180°C.
 
-#define PWM_RESOLUTION
+#define FET_GATE          14
 
-#define R_HEATER     2
-#define PWM_MAX_COLD (pow(2, PWM_RESOLUTION) - 1) * 2.75 / (20 / R_HEATER)
-#define PWM_MAX_HOT  PWM_MAX_COLD * 1.63
+#define PWM_FREQUENCY     50000
+#define PWM_RESOLUTION    10 // LOG(80000000/Freq, 2) = 10.6
+
+#define R_HEATER          2
+#define PWM_MAX_COLD      (pow(2, PWM_RESOLUTION) - 1) * 2.75 / (20 / R_HEATER)
+#define PWM_MAX_HOT       PWM_MAX_COLD * 1.63
+
+// TODO some fancy PID stuff
+#define KP                2
+#define KI                1
+#define KD                0
+
+#define LIMIT(val, limit) ((val < limit) ? val : limit)
 
 // https://www.mouser.dk/datasheet/2/73/TS391LT-1150364.pdf
 #define TEMP_CONTROL_DEFAULT()                                                 \
@@ -36,4 +46,4 @@ typedef struct {
 } reflow_profile;
 
 void temp_control_config(reflow_profile *cfg);
-void temp_control(float temp);
+void temp_control_start(float *temp);
