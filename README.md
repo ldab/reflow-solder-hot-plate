@@ -14,3 +14,11 @@
 ### Main CPU
 
 I used the the following board because that is what I had on my drawer:
+
+### Reflow profile
+
+It takes 3x temperature "profiles" as arguments, just to keep it simple
+
+<p align="center">
+  <img src="https://www.compuphase.com/electronics/solderprofile-standard.png" width="30%">
+</p>
