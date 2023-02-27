@@ -13,28 +13,31 @@
 
 // The resistance multiplies by approximately 1.63 from 20°C to 180°C.
 
-#define FET_GATE          14
+#define FET_GATE       14
 
-#define PWM_FREQUENCY     50000
-#define PWM_RESOLUTION    9 // LOG(80000000/Freq, 2) = 10.6
+#define PWM_FREQUENCY  50000
+#define PWM_RESOLUTION 9 // LOG(80000000/Freq, 2) = 10.6
 
-#define R_HEATER          2
-#define PWM_MAX_COLD      (pow(2, PWM_RESOLUTION) - 1) * 2.75 / (20 / R_HEATER)
-#define PWM_MAX_HOT       PWM_MAX_COLD * 1.63
+#define R_HEATER       2
+#define PWM_MAX_COLD   (pow(2, PWM_RESOLUTION) - 1) * 2.75 / (20 / R_HEATER)
+#define PWM_MAX_HOT    PWM_MAX_COLD * 1.63
 
 // TODO some fancy PID stuff
-#define KP                2
-#define KI                5
-#define KD                0
+#define KP             2
+#define KI             5
+#define KD             0
 
-#define LIMIT(val, limit) ((val < limit) ? val : limit)
+// PWM is inverted due to NPN transistor
+#define LIMIT(val, limit)                                                      \
+  ((val < limit) ? (pow(2, PWM_RESOLUTION) - 1) - val                          \
+                 : (pow(2, PWM_RESOLUTION) - 1) - limit)
 
 // https://www.mouser.dk/datasheet/2/73/TS391LT-1150364.pdf
 #define TEMP_CONTROL_DEFAULT()                                                 \
   {                                                                            \
     .preheat_temp = 90, .preheat_rate = 90 / 90, .soak_temp = 130,             \
     .soak_rate = 210 / 138, .reflow_temp = 138, .reflow_time = 160,            \
-  }
+  } 
 
 typedef struct {
   uint32_t preheat_temp;
