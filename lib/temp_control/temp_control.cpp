@@ -41,11 +41,11 @@ static void TaskControl(void *pvParameters)
   uint8_t state          = PREHEAT;
   uint32_t start_time    = millis();
   uint32_t duty          = 0;
-  float current_setpoint = 20;
-
+  
   for (;;) // A Task shall never return or exit.
   {
     float temp = *((float *)pvParameters);
+    static float current_setpoint = temp;
     switch (state) {
     case PREHEAT:
       if (temp > profile.preheat_temp) {

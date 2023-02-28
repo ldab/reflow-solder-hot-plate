@@ -37,8 +37,8 @@ const char HTTP_SETUP[] PROGMEM = R"rawliteral(
             <h3>Reflow</h3>
               <label for="s20">Setpoint &deg;C</label>
               <input type="number" id ="s20" name="s20" min="1" max="1240" value=138 required><br>
-              <label for="s32">Hold sec</label>
-              <input type="number" id ="s32" name="s32" min="0" max="3600" value=160 required><br>
+              <label for="s22">Hold sec</label>
+              <input type="number" id ="s22" name="s22" min="0" max="3600" value=160 required><br>
               <input type ="submit" value ="FIRE">
             </p>
           </form>
