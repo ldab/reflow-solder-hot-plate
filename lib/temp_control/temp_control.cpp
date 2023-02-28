@@ -31,7 +31,8 @@ void temp_control_config(reflow_profile *cfg)
   profile.reflow_temp  = cfg->reflow_temp;
   profile.reflow_time  = cfg->reflow_time;
 
-  analogWriteFrequency(PWM_FREQUENCY);
+  pinMode(FET_GATE, OUTPUT);
+  // analogWriteFrequency(PWM_FREQUENCY);
   analogWriteResolution(PWM_RESOLUTION); // LOG(80000000/Freq, 2) = 10.6
 }
 
@@ -52,7 +53,8 @@ static void TaskControl(void *pvParameters)
       } else {
         current_setpoint += profile.preheat_rate;
         duty = compute(current_setpoint, temp);
-        analogWrite(FET_GATE, LIMIT(duty, PWM_MAX_COLD));
+        duty = LIMIT(duty, PWM_MAX_COLD);
+        analogWrite(FET_GATE, duty);
       }
       break;
     case SOAK:
@@ -62,7 +64,8 @@ static void TaskControl(void *pvParameters)
       } else {
         current_setpoint += profile.soak_rate;
         duty = compute(current_setpoint, temp);
-        analogWrite(FET_GATE, LIMIT(duty, PWM_MAX_HOT));
+        duty = LIMIT(duty, PWM_MAX_HOT);
+        analogWrite(FET_GATE, duty);
       }
       break;
     case REFLOW:
@@ -72,7 +75,8 @@ static void TaskControl(void *pvParameters)
       } else {
         current_setpoint = profile.reflow_temp;
         duty             = compute(current_setpoint, temp);
-        analogWrite(FET_GATE, LIMIT(duty, PWM_MAX_HOT));
+        duty             = LIMIT(duty, PWM_MAX_HOT);
+        analogWrite(FET_GATE, duty);
       }
       break;
     case COOLING:
