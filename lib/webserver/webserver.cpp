@@ -28,6 +28,43 @@ class CaptiveRequestHandler : public AsyncWebHandler
   }
 };
 
+void onFire(AsyncWebServerRequest *request, void *cb)
+{
+  struct reflow_profile {
+    uint32_t preheat_temp;
+    uint32_t preheat_rate;
+    uint32_t soak_temp;
+    uint32_t soak_rate;
+    uint32_t reflow_temp;
+    uint32_t reflow_time;
+  };
+
+  static struct reflow_profile profile;
+
+  int params = request->params();
+
+  for (int i = 0; i < params; i++) {
+    AsyncWebParameter *p = request->getParam(i);
+    log_d("%s: %d", p->name(), p->value().toInt());
+    if (p->isPost()) {
+      if (p->name() == "s00")
+        profile.preheat_temp = p->value().toInt();
+      if (p->name() == "s01")
+        profile.preheat_rate = p->value().toInt();
+      if (p->name() == "s10")
+        profile.soak_temp = p->value().toInt();
+      if (p->name() == "s11")
+        profile.soak_rate = p->value().toInt();
+      if (p->name() == "s20")
+        profile.reflow_temp = p->value().toInt();
+      if (p->name() == "22")
+        profile.preheat_rate = p->value().toInt();
+    }
+  }
+
+  // *cb(&profile);
+}
+
 void onUpload(AsyncWebServerRequest *request, String filename, size_t index,
               uint8_t *data, size_t len, bool final)
 {
@@ -237,7 +274,7 @@ static void TaskWebserver(void *pvParameters)
     events.send(msg, "temperature");
     log_v("send event %s", msg);
 
-    vTaskDelay(pdMS_TO_TICKS(100));
+    vTaskDelay(pdMS_TO_TICKS(1000)); // TODO unecessarly too fast
   }
   vTaskDelete(NULL);
 }
@@ -286,8 +323,10 @@ void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,
     });
 
     server.on("/", HTTP_POST, [cb](AsyncWebServerRequest *request) {
+      onFire(request, (void *)cb);
       cb();
       request->send_P(200, "text/html", HTTP_INDEX, processor);
+      events.send("Heating", "display");
     });
 
     server.on("/setup", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -304,7 +343,7 @@ void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,
       request->send_P(200, "text/html", HTTP_INFO, processor);
     });
 
-     server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request) {
+    server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request) {
       request->redirect("/");
       vTaskDelay(pdMS_TO_TICKS(500));
       ESP.restart();

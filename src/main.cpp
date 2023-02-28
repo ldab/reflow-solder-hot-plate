@@ -12,10 +12,14 @@ uint8_t status = 0;
 std::vector<float> readings;
 std::vector<long> epocTime;
 
-static void webServerConnectedCb()
+static void webServerConnectedCb(/*void *cfg*/)
 {
+  set_led(RED, SLOW);
   reflow_profile cfg = TEMP_CONTROL_DEFAULT();
   temp_control_config(&cfg);
+
+  // reflow_profile *_cfg = (reflow_profile *)cfg;
+  // temp_control_config(_cfg);
   temp_control_start(&temp);
 }
 
