@@ -9,9 +9,9 @@ void lmt85_init()
   ADC_ATTEN_DB_6      0 mV ~ 1750 mV
   ADC_ATTEN_DB_11     0 mV ~ 3100 mV
   */
-  analogReadResolution(12);      // 0-4095
-  analogSetAttenuation(ADC_6db); // ADC_ATTEN_DB_6
   adcAttachPin(TEMP_ANALOG);
+  analogReadResolution(12);      // 0-4095
+  analogSetAttenuation(ADC_11db);
 }
 
 float lmt85_temp()
@@ -38,5 +38,5 @@ static void TaskTemp(void *pvParameters)
 
 void lmt85_start(float *temp)
 {
-  xTaskCreate(TaskTemp, "TaskTemp", 4096, temp, 2, NULL);
+  xTaskCreate(TaskTemp, "TaskTemp", 4096, temp, 0, NULL);
 }
