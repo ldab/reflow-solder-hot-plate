@@ -35,7 +35,7 @@ void setup(void)
   gpios_init();
 
   Serial.begin(115200);
-  Serial.printf("Version: %s\n", VERSION);
+  log_i("APP version: %s", VERSION);
 
   // Serial.setDebugOutput(true);
 

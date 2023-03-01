@@ -18,7 +18,7 @@ float lmt85_temp()
 {
   uint32_t adcMv = analogReadMilliVolts(TEMP_ANALOG);
   // equation (2) product datasheet
-  float temp = (8.194 - sqrt(pow(-8.194, 2) + 4 * 0.00262 * (1324 - adcMv))) / (2 * -0.00262) + 30;
+  float temp = (8.194 - sqrt(pow(-8.194, 2) + 4 * 0.00262 * (1324 - (float)adcMv))) / (2 * -0.00262) + 30;
   log_d("adc: %dmV temp: %f", adcMv, temp);
   return temp;
 }
@@ -31,12 +31,12 @@ static void TaskTemp(void *pvParameters)
   for (;;) // A Task shall never return or exit.
   {
     *temp = lmt85_temp();
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    vTaskDelay(pdMS_TO_TICKS(500));
   }
   vTaskDelete(NULL);
 }
 
 void lmt85_start(float *temp)
 {
-  xTaskCreate(TaskTemp, "TaskTemp", 4096, temp, 0, NULL);
+  xTaskCreate(TaskTemp, "TaskTemp", 4096, temp, 1, NULL);
 }
