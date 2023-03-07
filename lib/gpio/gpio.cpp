@@ -55,6 +55,9 @@ void TaskLed(void *pvParameters)
 
 void set_led(colour_t colour, uint32_t rate)
 {
+  digitalWrite(LED_R, HIGH);
+  digitalWrite(LED_G, HIGH);
+  digitalWrite(LED_B, HIGH);
   led.colour = colour;
   led.rate   = rate;
 }
