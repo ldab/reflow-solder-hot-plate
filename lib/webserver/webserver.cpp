@@ -266,15 +266,26 @@ static void TaskWebserver(void *pvParameters)
 
   for (;;) // A Task shall never return or exit.
   {
-    if (WiFi.getMode() == WIFI_MODE_AP || WiFi.getMode() == WIFI_MODE_APSTA)
-      dnsServer.processNextRequest();
-
     char msg[16];
     sprintf(msg, "%.1f", *temp);
     events.send(msg, "temperature");
     log_v("send event %s", msg);
 
-    vTaskDelay(pdMS_TO_TICKS(1000)); // TODO unecessarly too fast
+    vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+  vTaskDelete(NULL);
+}
+
+static void TaskMDns(void *pvParameters)
+{
+  float *temp = (float *)pvParameters;
+
+  for (;;) // A Task shall never return or exit.
+  {
+    if (WiFi.getMode() == WIFI_MODE_AP || WiFi.getMode() == WIFI_MODE_APSTA) {
+      dnsServer.processNextRequest();
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
   vTaskDelete(NULL);
 }
@@ -369,4 +380,5 @@ void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,
   server.begin();
 
   xTaskCreate(TaskWebserver, "TaskWebserver", 4096, var, 2, NULL);
+  xTaskCreate(TaskMDns, "TaskMDns", 4096, NULL, 1, NULL);
 }
