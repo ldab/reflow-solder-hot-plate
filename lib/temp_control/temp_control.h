@@ -19,7 +19,7 @@
 #define PWM_RESOLUTION 8 // LOG(80000000/Freq, 2) = 10.6
 
 #define R_HEATER       2
-#define PWM_MAX_COLD   (pow(2, PWM_RESOLUTION) - 1) * 2.75 / (20 / R_HEATER)
+#define PWM_MAX_COLD   (pow(2, PWM_RESOLUTION) - 1) * 2.25 / (20 / (float)R_HEATER)
 #define PWM_MAX_HOT    PWM_MAX_COLD * 1.63
 
 // TODO some fancy PID stuff
