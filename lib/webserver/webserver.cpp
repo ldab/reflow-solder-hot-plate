@@ -1,4 +1,5 @@
 #include "webserver.h"
+#include "gpio.h"
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -323,6 +324,7 @@ void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,
         .setFilter(ON_AP_FILTER); // only when requested from AP
   } else {
     log_d("WiFi Connected, IP: %s\n", WiFi.localIP().toString().c_str());
+    set_led(GREEN, SLOW);
 
     configTzTime("CET-1CEST,M3.5.0,M10.5.0/3", "0.pool.ntp.org",
                  "1.pool.ntp.org");
