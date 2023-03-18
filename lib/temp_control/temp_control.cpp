@@ -1,4 +1,5 @@
 #include "temp_control.h"
+#include "driver/ledc.h"
 
 typedef enum { IDLE = 0, PREHEAT, SOAK, REFLOW, COOLING } state;
 reflow_profile profile;
@@ -32,19 +33,21 @@ void temp_control_config(reflow_profile *cfg)
   profile.reflow_time  = cfg->reflow_time;
 
   pinMode(FET_GATE, OUTPUT);
-  // analogWriteFrequency(PWM_FREQUENCY);
-  analogWriteResolution(PWM_RESOLUTION); // LOG(80000000/Freq, 2) = 10.6
+
+  ledcSetup(3, PWM_FREQUENCY, PWM_RESOLUTION);
+  ledcAttachPin(FET_GATE, 3);
+  ledcWrite(3, 255);
 }
 
 static void TaskControl(void *pvParameters)
 {
-  uint8_t state          = PREHEAT;
-  uint32_t start_time    = millis();
-  uint32_t duty          = 0;
-  
+  uint8_t state       = PREHEAT;
+  uint32_t start_time = millis();
+  uint32_t duty       = 0;
+
   for (;;) // A Task shall never return or exit.
   {
-    float temp = *((float *)pvParameters);
+    float temp                    = *((float *)pvParameters);
     static float current_setpoint = temp;
     switch (state) {
     case PREHEAT:
@@ -54,7 +57,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint += profile.preheat_rate;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_COLD);
-        analogWrite(FET_GATE, duty);
+        ledcWrite(3, 65);
       }
       break;
     case SOAK:
@@ -65,7 +68,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint += profile.soak_rate;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_HOT);
-        analogWrite(FET_GATE, duty);
+        ledcWrite(3, 65);
       }
       break;
     case REFLOW:
@@ -76,7 +79,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint = profile.reflow_temp;
         duty             = compute(current_setpoint, temp);
         duty             = LIMIT(duty, PWM_MAX_HOT);
-        analogWrite(FET_GATE, duty);
+        ledcWrite(3, 65);
       }
       break;
     case COOLING:

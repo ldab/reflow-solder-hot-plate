@@ -11,6 +11,10 @@
   <img src="extras/relow-solder-hot-plate.png" width="30%">
 </p>
 
+<p align="center">
+  <img src="img/relow-solder-hot-plate-therm.bmp" width="30%">
+</p>
+
 ### Main CPU
 
 I used the the following board because that is what I had on my drawer:

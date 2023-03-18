@@ -15,7 +15,7 @@
 
 #define FET_GATE       14
 
-#define PWM_FREQUENCY  50000
+#define PWM_FREQUENCY  65000
 #define PWM_RESOLUTION 8 // LOG(80000000/Freq, 2) = 10.6
 
 #define R_HEATER       2
