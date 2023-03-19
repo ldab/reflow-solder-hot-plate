@@ -57,7 +57,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint += profile.preheat_rate;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_COLD);
-        ledcWrite(3, 65);
+        ledcWrite(3, duty);
       }
       break;
     case SOAK:
@@ -68,7 +68,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint += profile.soak_rate;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_HOT);
-        ledcWrite(3, 65);
+        ledcWrite(3, duty);
       }
       break;
     case REFLOW:
@@ -79,7 +79,7 @@ static void TaskControl(void *pvParameters)
         current_setpoint = profile.reflow_temp;
         duty             = compute(current_setpoint, temp);
         duty             = LIMIT(duty, PWM_MAX_HOT);
-        ledcWrite(3, 65);
+        ledcWrite(3, duty);
       }
       break;
     case COOLING:

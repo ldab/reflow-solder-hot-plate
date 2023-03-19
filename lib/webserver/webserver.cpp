@@ -90,6 +90,7 @@ void onUpload(AsyncWebServerRequest *request, String filename, size_t index,
       ESP.restart();
     } else {
       Update.printError(Serial);
+      set_led(YELLOW, SLOW);
     }
   }
 }
