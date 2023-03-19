@@ -71,6 +71,7 @@ void onUpload(AsyncWebServerRequest *request, String filename, size_t index,
 {
   if (!index) {
     log_d("Update Start: %s\n", filename.c_str());
+    set_led(PURPLE, FAST);
     if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
       Update.printError(Serial);
     }
@@ -280,6 +281,7 @@ static void TaskWebserver(void *pvParameters)
 static void TaskMDns(void *pvParameters)
 {
   float *temp = (float *)pvParameters;
+  MDNS.begin(HOSTNAME);
 
   for (;;) // A Task shall never return or exit.
   {
