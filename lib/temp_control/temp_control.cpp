@@ -83,6 +83,7 @@ static void TaskControl(void *pvParameters)
       }
       break;
     case COOLING:
+      ESP.restart();
     default:
       break;
     }

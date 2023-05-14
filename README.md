@@ -27,7 +27,7 @@ It is important that the power supply used is able to supply enough current, oth
 
 * Save readings on a vector so it reloads the graph in case you leave the webpage;
 * Websocket terminal;
-* 
+* Use the button to trigger reflow;
 
 ### Main CPU
 
