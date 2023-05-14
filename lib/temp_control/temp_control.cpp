@@ -54,7 +54,7 @@ static void TaskControl(void *pvParameters)
       if (temp > profile.preheat_temp) {
         state = SOAK;
       } else {
-        current_setpoint += profile.preheat_rate;
+        current_setpoint = (current_setpoint < profile.preheat_temp) ? (current_setpoint + profile.preheat_rate) : profile.preheat_temp;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_COLD);
         ledcWrite(3, duty);
@@ -65,7 +65,7 @@ static void TaskControl(void *pvParameters)
         state      = REFLOW;
         start_time = millis();
       } else {
-        current_setpoint += profile.soak_rate;
+        current_setpoint = (current_setpoint < profile.soak_temp) ? (current_setpoint + profile.soak_rate) : profile.soak_temp;
         duty = compute(current_setpoint, temp);
         duty = LIMIT(duty, PWM_MAX_HOT);
         ledcWrite(3, duty);
