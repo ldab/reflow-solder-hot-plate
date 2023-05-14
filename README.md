@@ -15,6 +15,20 @@
   <img src="img/relow-solder-hot-plate-therm.bmp" width="30%">
 </p>
 
+## Before anything else:
+
+:exclamation: :boom:
+
+Make sure you understand the risks involved on this project as you will be dealing with high temperatures and high-ish voltages.
+
+It is important that the power supply used is able to supply enough current, otherwise it will crash, if you got the board from me it should be fine, otherwise adjust the values on `lib/temp_control/temp_control.h`
+
+### TODO
+
+* Save readings on a vector so it reloads the graph in case you leave the webpage;
+* Websocket terminal;
+* 
+
 ### Main CPU
 
 I used the the following board because that is what I had on my drawer:
@@ -36,3 +50,11 @@ With a duty cycle of 78% (PWM is inverted), it results in 22% of the total power
 </p>
 
 https://tinyurl.com/2pvo2wyf
+
+### Known issues
+
+* Because of the mosfet logic and high current, when plugged to the computer, the USB-A port will probably struggle to deliver power and will rover around 3.6V, which is not enough to feed the Buck-Converter, that will result in the ESP32 to not wake up and the Mosfet will be constantly ON :exclamation: :exclamation: :exclamation:
+
+* For the reason mentioned above, it need to be programed via RX/TX test points under the board;
+
+* RX connects to RX and TX connects to TX :disappointed:
