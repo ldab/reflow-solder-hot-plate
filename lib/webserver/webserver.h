@@ -11,8 +11,7 @@
 
 #include "html_strings.h"
 
-// typedef void(WebserverConnectedCb(wl_status_t status));
-typedef void(WebserverConnectedCb(void /**args*/));
+typedef void(WebserverConnectedCb(void *arg));
 
 // TODO ugly way to pass variable but I'm tired
 void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,

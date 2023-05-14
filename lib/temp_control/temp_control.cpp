@@ -36,7 +36,7 @@ void temp_control_config(reflow_profile *cfg)
 
   ledcSetup(3, PWM_FREQUENCY, PWM_RESOLUTION);
   ledcAttachPin(FET_GATE, 3);
-  ledcWrite(3, 255);
+  ledcWrite(3, pow(2, PWM_RESOLUTION) - 1);
 }
 
 static void TaskControl(void *pvParameters)

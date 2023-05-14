@@ -1,6 +1,5 @@
 #include <Arduino.h>
 
-
 #include "gpio.h"
 #include "lmt85.h"
 #include "temp_control.h"
@@ -12,14 +11,19 @@ uint8_t status = 0;
 std::vector<float> readings;
 std::vector<long> epocTime;
 
-static void webServerConnectedCb(/*void *cfg*/)
+void webServerConnectedCb(void *profile)
 {
   set_led(RED, SLOW);
-  reflow_profile cfg = TEMP_CONTROL_DEFAULT();
+  reflow_profile cfg;
+
+  if (profile == NULL) {
+    cfg = TEMP_CONTROL_DEFAULT();
+  } else {
+    cfg = *(reflow_profile *)profile;
+  }
+
   temp_control_config(&cfg);
 
-  // reflow_profile *_cfg = (reflow_profile *)cfg;
-  // temp_control_config(_cfg);
   temp_control_start(&temp);
 }
 

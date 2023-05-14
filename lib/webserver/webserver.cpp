@@ -29,7 +29,7 @@ class CaptiveRequestHandler : public AsyncWebHandler
   }
 };
 
-void onFire(AsyncWebServerRequest *request, void *cb)
+void onFire(AsyncWebServerRequest *request, WebserverConnectedCb *cb)
 {
   struct reflow_profile {
     uint32_t preheat_temp;
@@ -58,12 +58,12 @@ void onFire(AsyncWebServerRequest *request, void *cb)
         profile.soak_rate = p->value().toInt();
       if (p->name() == "s20")
         profile.reflow_temp = p->value().toInt();
-      if (p->name() == "22")
-        profile.preheat_rate = p->value().toInt();
+      if (p->name() == "s22")
+        profile.reflow_time = p->value().toInt();
     }
   }
 
-  // *cb(&profile);
+  cb((void *)&profile);
 }
 
 void onUpload(AsyncWebServerRequest *request, String filename, size_t index,
@@ -339,8 +339,7 @@ void webserver_start(std::vector<float> *readings, std::vector<long> *epocTime,
     });
 
     server.on("/", HTTP_POST, [cb](AsyncWebServerRequest *request) {
-      onFire(request, (void *)cb);
-      cb();
+      onFire(request, cb);
       request->send_P(200, "text/html", HTTP_INDEX, processor);
       events.send("Heating", "display");
     });
