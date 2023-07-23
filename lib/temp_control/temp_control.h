@@ -21,7 +21,7 @@
 #define R_HEATER       2
 #define V_IN           12
 #define I_IN           3.5
-#define PWM_MAX_COLD   (uint16_t)((pow(2, PWM_RESOLUTION) - 1) * I_IN / ((float)V_IN / (float)R_HEATER))
+#define PWM_MAX_COLD   (uint16_t)((1 << PWM_RESOLUTION) * I_IN / ((float)V_IN / (float)R_HEATER))
 #define PWM_MAX_HOT    (uint16_t)(PWM_MAX_COLD * 1.63)
 
 // TODO some fancy PID stuff
@@ -31,15 +31,15 @@
 
 // PWM is inverted due to NPN transistor
 #define LIMIT(val, limit)                                                      \
-  ((val < limit) ? (pow(2, PWM_RESOLUTION) - 1) - val                          \
-                 : (pow(2, PWM_RESOLUTION) - 1) - limit)
+  ((val < limit) ? (1 << PWM_RESOLUTION) - val                                 \
+                 : (1 << PWM_RESOLUTION) - limit)
 
 // https://www.mouser.dk/datasheet/2/73/TS391LT-1150364.pdf
 #define TEMP_CONTROL_DEFAULT()                                                 \
   {                                                                            \
     .preheat_temp = 90, .preheat_rate = 90 / 90, .soak_temp = 130,             \
     .soak_rate = 210 / 138, .reflow_temp = 138, .reflow_time = 160,            \
-  } 
+  }
 
 typedef struct {
   uint32_t preheat_temp;

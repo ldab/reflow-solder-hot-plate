@@ -36,7 +36,7 @@ void temp_control_config(reflow_profile *cfg)
 
   ledcSetup(3, PWM_FREQUENCY, PWM_RESOLUTION);
   ledcAttachPin(FET_GATE, 3);
-  ledcWrite(3, pow(2, PWM_RESOLUTION) - 1);
+  ledcWrite(3, 1 << PWM_RESOLUTION);
 }
 
 static void TaskControl(void *pvParameters)
@@ -88,7 +88,8 @@ static void TaskControl(void *pvParameters)
       break;
     }
 
-    log_d("state: %d setpoint: %.1f duty: %d", state, current_setpoint, duty);
+    log_d("state: %d setpoint: %.1f duty: %.1f%%", state, current_setpoint,
+          (float)duty * 100 / (1 << PWM_RESOLUTION));
 
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
