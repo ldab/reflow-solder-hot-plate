@@ -1,4 +1,4 @@
-# relow-solder-hot-plate
+# reflow-solder-hot-plate
  USB-C powered, esp32s3 based, hot plate
 
 [![GitHub version](https://img.shields.io/github/v/release/ldab/relow-solder-hot-plate?include_prereleases)](https://github.com/ldab/relow-solder-hot-plate/releases/latest)
